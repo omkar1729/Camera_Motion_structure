@@ -26,7 +26,7 @@ for i in range(1):
     right_img = cv2.imread('/home/sarthake/project_2b/images/task_5/right_' + str(i) + '.png')
     h,w = left_img.shape[:-1]
     shape = (w,h)
-    print(shape)
+    # print(shape)
     R = np.identity(3)
     undistort_map_left_x, undistort_map_left_y = cv2.initUndistortRectifyMap(intrinsic_matrix_left, distortion_left, R,
                                                                              intrinsic_matrix_left, shape, cv2.CV_32FC1)
@@ -60,7 +60,7 @@ image_points_left = np.float32(image_points_left).reshape(-1,1,2)
 image_points_right = np.float32(image_points_right).reshape(-1,1,2)
 object_points = np.float32(object_points).reshape(-1,1,2)
 
-# print(np.shape(image_points_left))
+# print(image_points_left)
 # print(np.shape(object_points))
 
 homography_matrix_left, mask = cv2.findHomography(image_points_left,object_points,0)
@@ -68,9 +68,10 @@ homography_matrix_right, mask = cv2.findHomography(image_points_right,object_poi
 print(homography_matrix_left)
 
 
-im_dst_left = cv2.warpPerspective(remap_left_img, homography_matrix_left, (shape[0]*10, shape[1]*10))
-im_dst_right = cv2.warpPerspective(remap_right_img, homography_matrix_right, (shape[0]*10, shape[1]*10))
+im_dst_left = cv2.warpPerspective(remap_left_img, homography_matrix_left, (shape[0]*2, shape[1]*2))
+im_dst_right = cv2.warpPerspective(remap_right_img, homography_matrix_right, (shape[0]*2, shape[1]*2))
+cv2.namedWindow('left_warped', cv2.WINDOW_NORMAL)
+cv2.namedWindow('right_warped', cv2.WINDOW_NORMAL)
 cv2.imshow('left_warped', im_dst_left)
 cv2.imshow('right_warped', im_dst_right)
 cv2.waitKey()
-cv2.destroyAllWindows()
