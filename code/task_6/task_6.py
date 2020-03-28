@@ -8,9 +8,10 @@ import numpy as np
 
 
 objp = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=float)
+
 print(objp.shape)
 
-v = np.array([[-0.25, -0.25, 1], [0.25, -0.25, 1], [0.25, 0.25, 1], [-0.25, 0.25, 1], [0, 0, 2]])
+v = np.array([[-0.25, -0.25, 1], [0.25, -0.25, 1], [0.25, 0.25, 1], [-0.25, 0.25, 1], [0, 0, 0]])
 fig = plt.figure()
 ax = fig.gca(projection='3d')
 ax.set_xlabel('X axis')
@@ -73,7 +74,7 @@ for i in range(11):
     #                                      linewidths=1, edgecolors='r', alpha=.25))
 
     res1 = np.matmul(v,rvec_l)
-    f_res = res1.T+(tvec_l*5)
+    f_res = res1.T+(tvec_l)
     v = f_res.T
     #v = np.matmul(v, tvec_l)
 
