@@ -16,14 +16,14 @@ image_points_left = []
 image_points_right = []
 shape = ()
 
-intrinsic_matrix_left = np.loadtxt('/home/sarthake/project_2b/parameters/intrinsic_l.csv', delimiter=',')
-intrinsic_matrix_right = np.loadtxt('/home/sarthake/project_2b/parameters/intrinsic_r.csv', delimiter=',')
-distortion_left = np.loadtxt('/home/sarthake/project_2b/parameters/distortion_l.csv',delimiter=',')
-distortion_right = np.loadtxt('/home/sarthake/project_2b/parameters/distortion_r.csv',delimiter=',')
+intrinsic_matrix_left = np.loadtxt('../../parameters/intrinsic_l.csv', delimiter=',')
+intrinsic_matrix_right = np.loadtxt('../../parameters/intrinsic_r.csv', delimiter=',')
+distortion_left = np.loadtxt('../../parameters/distortion_l.csv',delimiter=',')
+distortion_right = np.loadtxt('../../parameters/distortion_r.csv',delimiter=',')
 
 for i in range(1):
-    left_img = cv2.imread('/home/sarthake/project_2b/images/task_5/left_'+str(i)+'.png')
-    right_img = cv2.imread('/home/sarthake/project_2b/images/task_5/right_' + str(i) + '.png')
+    left_img = cv2.imread('../../images/task_5/left_'+str(i)+'.png')
+    right_img = cv2.imread('../../images/task_5/right_' + str(i) + '.png')
     h,w = left_img.shape[:-1]
     shape = (w,h)
     # print(shape)
