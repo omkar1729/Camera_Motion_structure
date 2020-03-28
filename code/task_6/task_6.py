@@ -1,9 +1,22 @@
 import cv2
 import numpy as np
 from cv2 import aruco
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
+import numpy as np
+
 
 objp = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=float)
 print(objp.shape)
+
+v = np.array([[-0.25, -0.25, 9], [0.25, -0.25, 9], [0.25, 0.25, 9], [-0.25, 0.25, 9], [0, 0, 10]])
+fig = plt.figure()
+ax = fig.gca(projection='3d')
+ax.set_xlabel('X axis')
+ax.set_ylabel('Y axis')
+ax.set_zlabel('Z axis')
+ax.scatter3D(objp[1:, 0], objp[1:, 1], objp[1:, 2])
+ax.scatter3D(0.0, 0.0, 0.0, c='red')
 
 intrinsic_matrix_left = np.loadtxt('../../parameters/intrinsic_l.csv', delimiter=',')
 intrinsic_matrix_right = np.loadtxt('../../parameters/intrinsic_r.csv', delimiter=',')
@@ -31,25 +44,62 @@ for i in range(11):
 
     _, rvec_l, tvec_l = cv2.solvePnP(objp, corners_l, intrinsic_matrix_left, distortion_left)
     rvec_l, _ = cv2.Rodrigues(rvec_l)
-    print(rvec_l, tvec_l)
+    tvec_l, _ = cv2.Rodrigues(tvec_l)
+    #print(rvec_l, tvec_l)
 
     _, rvec_r, tvec_r = cv2.solvePnP(objp, corners_r, intrinsic_matrix_right, distortion_right)
     rvec_r, _ = cv2.Rodrigues(rvec_r)
-    print(rvec_r, tvec_r)
+    tvec_r, _ = cv2.Rodrigues(tvec_r)
+    print(rvec_r.shape, tvec_r.shape)
+
+
+
+
+    # vertices of a pyramid
+
+    # ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
+    #
+    # # generate list of sides' polygons of our pyramid
+    # verts = [[v[0], v[1], v[4]], [v[0], v[3], v[4]],
+    #          [v[2], v[1], v[4]], [v[2], v[3], v[4]], [v[0], v[1], v[2], v[3]]]
+    #
+    # # plot sides
+    # ax.add_collection3d(Poly3DCollection(verts,
+    #                                      linewidths=1, edgecolors='r', alpha=.25))
+
+    v = np.matmul(v, rvec_l)
+    v = np.matmul(v, tvec_l)
+    ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
+
+    # generate list of sides' polygons of our pyramid
+    verts = [[v[0], v[1], v[4]], [v[0], v[3], v[4]],
+             [v[2], v[1], v[4]], [v[2], v[3], v[4]], [v[0], v[1], v[2], v[3]]]
+
+    # plot sides
+    ax.add_collection3d(Poly3DCollection(verts,
+                                         linewidths=1, edgecolors='r', alpha=.25))
+
+
+
+
+
+
+
+
+
+
+
 
     cv2.imshow('img_left', frame_markers_l)
     cv2.imshow('img_right', frame_markers_r)
 
-    cv2.waitKey(500)
+    cv2.waitKey(100)
 
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
-fig = plt.figure()
-ax = plt.axes(projection='3d')
-ax.scatter3D(objp[:, 0], objp[:, 1], objp[:, 2])
-# ax.scatter3D(objp)
-# fig.savefig('../../output/task_2/Figure ' + str(i) + '.png')
-# ax.scatter3D(origin2[0],origin2[1],origin2[2],c='green')
-# ax.scatter3D(0.0,0.0,0.0,c='red')
 plt.show()
+
+# translate = np.zeros([3,1])
+# rotate = np.identity(3)
+# proj1 = np.dot(intrinsic_matrix_left,np.concatenate((rotate,translate),axis=1))
+#
+
