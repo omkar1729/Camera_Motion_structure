@@ -5,7 +5,6 @@ from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 import numpy as np
 
-
 objp = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=float)
 print(objp.shape)
 
@@ -45,15 +44,12 @@ for i in range(11):
     _, rvec_l, tvec_l = cv2.solvePnP(objp, corners_l, intrinsic_matrix_left, distortion_left)
     rvec_l, _ = cv2.Rodrigues(rvec_l)
     tvec_l, _ = cv2.Rodrigues(tvec_l)
-    #print(rvec_l, tvec_l)
+    # print(rvec_l, tvec_l)
 
     _, rvec_r, tvec_r = cv2.solvePnP(objp, corners_r, intrinsic_matrix_right, distortion_right)
     rvec_r, _ = cv2.Rodrigues(rvec_r)
     tvec_r, _ = cv2.Rodrigues(tvec_r)
     print(rvec_r.shape, tvec_r.shape)
-
-
-
 
     # vertices of a pyramid
 
@@ -79,27 +75,10 @@ for i in range(11):
     ax.add_collection3d(Poly3DCollection(verts,
                                          linewidths=1, edgecolors='r', alpha=.25))
 
-
-
-
-
-
-
-
-
-
-
-
     cv2.imshow('img_left', frame_markers_l)
     cv2.imshow('img_right', frame_markers_r)
 
     cv2.waitKey(100)
 
-
 plt.show()
-
-# translate = np.zeros([3,1])
-# rotate = np.identity(3)
-# proj1 = np.dot(intrinsic_matrix_left,np.concatenate((rotate,translate),axis=1))
-#
 
