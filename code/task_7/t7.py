@@ -133,7 +133,6 @@ ax.set_xlabel('X axis')
 ax.set_ylabel('Y axis')
 ax.set_zlabel('Z axis')
 ax.scatter(triangulate[0]/triangulate[3],triangulate[1]/triangulate[3],triangulate[2]/triangulate[3])
-# cv.imwrite('../../output/task_3/Plot '+ str(i) + '.png', fig)
 fig.savefig('../../output/task_7/Plot '+ str(i) + '.png')
 plt.show()
 
