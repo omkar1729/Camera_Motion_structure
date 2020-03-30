@@ -5,7 +5,8 @@ str_left = '../../images/task_7/left_{}.png'
 str_right = '../../images/task_7/right_{}.png'
 df = (str_left.format(1))
 
-i=1                                                                                #Check which pair of images
+i=2                                                                                #Check which pair of images
+print('Image pair: ',i)
 left = cv.imread(str_left.format(i), cv.IMREAD_GRAYSCALE)
 right = cv.imread(str_right.format(i), cv.IMREAD_GRAYSCALE)
 
@@ -137,9 +138,10 @@ fig.savefig('../../output/task_7/Plot '+ str(i) + '.png')
 plt.show()
 
 E,mask = cv.findEssentialMat(list_kp1,list_kp2,cameraMatrix = intrinsic_matrix_left,method = cv.RANSAC,prob = 0.999,threshold = 1.0)
+print("E =")
+print(E)
 
 #Plot the inliers
-
 good_points_l = []
 good_points_r = []
 kp1_n = []
@@ -205,7 +207,7 @@ fig2.savefig('../../output/task_7/Plot (inliers) ' + str(i) + '.png')
 plt.show()
 
 #points, R, t, mask = cv.recoverPose(E, list_kp1, list_kp2)
-points, R, t, mask = cv.recoverPose(E, good_points_l, good_points_r)
+points, R, t, mask = cv.recoverPose(E, good_points_l, good_points_r,intrinsic_matrix_left)
 
 print("R = ")
 print(R)
