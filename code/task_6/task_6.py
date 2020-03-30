@@ -52,8 +52,14 @@ for i in range(11):
     corners_l = np.asarray(corners_l)
     corners_r = np.asarray(corners_r)
 
-    corners_l = np.squeeze(corners_l, axis=0)
-    corners_r = np.squeeze(corners_r, axis=0)
+    #corners_l = np.squeeze(corners_l, axis=0)
+    corners_l = corners_l[0,:,:]
+    #corners_r = np.squeeze(corners_r, axis=0)
+    corners_r = corners_r[0,:,:]
+
+
+
+
     print(corners_l.shape)
 
     _, rvec_l, tvec_l = cv2.solvePnP(objp, corners_l, intrinsic_matrix_left, distortion_left)
