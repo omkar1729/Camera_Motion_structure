@@ -73,5 +73,8 @@ im_dst_right = cv2.warpPerspective(remap_right_img, homography_matrix_right, (sh
 cv2.namedWindow('left_warped', cv2.WINDOW_NORMAL)
 cv2.namedWindow('right_warped', cv2.WINDOW_NORMAL)
 cv2.imshow('left_warped', im_dst_left)
+cv2.imwrite('../../output/task_5/left_warp ' + str(i) + '.png',im_dst_left)
 cv2.imshow('right_warped', im_dst_right)
+cv2.imwrite('../../output/task_5/right_warp ' + str(i) + '.png',im_dst_right)
+
 cv2.waitKey()

@@ -13,6 +13,7 @@ print(objp.shape)
 
 v = np.array([[-1, -1, 2], [1, -1, 2], [1, 1, 2], [-1, 1, 2], [0, 0, 0]])
 fig = plt.figure()
+
 ax = fig.gca(projection='3d')
 ax.set_xlabel('X axis')
 ax.set_ylabel('Y axis')
@@ -20,6 +21,16 @@ ax.set_zlabel('Z axis')
 ax.scatter3D(objp[1:, 0], objp[1:, 1], objp[1:, 2])
 #ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
 ax.scatter3D(0.0, 0.0, 0.0, c='red')
+
+v2 = np.array([[-1, -1, 2], [1, -1, 2], [1, 1, 2], [-1, 1, 2], [0, 0, 0]])
+fig2 = plt.figure()
+ax2 = fig2.gca(projection='3d')
+ax2.set_xlabel('X axis')
+ax2.set_ylabel('Y axis')
+ax2.set_zlabel('Z axis')
+ax2.scatter3D(objp[1:, 0], objp[1:, 1], objp[1:, 2])
+#ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
+ax2.scatter3D(0.0, 0.0, 0.0, c='red')
 
 intrinsic_matrix_left = np.loadtxt('../../parameters/intrinsic_l.csv', delimiter=',')
 intrinsic_matrix_right = np.loadtxt('../../parameters/intrinsic_r.csv', delimiter=',')
@@ -61,18 +72,14 @@ for i in range(11):
     rvec_r, _ = cv2.Rodrigues(rvec_r)
     #tvec_r, _ = cv2.Rodrigues(tvec_r)
     #print(rvec_r.shape, tvec_r.shape)
+    rvec_r = np.asarray(rvec_r)
+    tvec_r = np.asarray(tvec_r)
+    rvec_r = rvec_r.T
 
-    # vertices of a pyramid
+    tvec_r = np.matmul(-rvec_r, tvec_r)
 
-    #ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
-    #
-    # # generate list of sides' polygons of our pyramid
-    # verts = [[v[0], v[1], v[4]], [v[0], v[3], v[4]],
-    #          [v[2], v[1], v[4]], [v[2], v[3], v[4]], [v[0], v[1], v[2], v[3]]]
-    #
-    # # plot sides
-    # ax.add_collection3d(Poly3DCollection(verts,
-    #                                      linewidths=1, edgecolors='r', alpha=.25))
+    print(5 * tvec_r)
+    print(rvec_r)
 
     res1 = np.matmul(rvec_l,v.T)
     f_res = res1+(tvec_l)
@@ -83,6 +90,10 @@ for i in range(11):
     #print(v)
 
     #T = np.concatenate(rvec_l,tvec_l)
+
+    res2 = np.matmul(rvec_r, v2.T)
+    f_res2 = res2 + (tvec_r)
+    v2 = f_res2.T
 
 
 
@@ -97,12 +108,28 @@ for i in range(11):
     ax.add_collection3d(Poly3DCollection(verts,
                                          linewidths=1, edgecolors='r', alpha=.25))
 
+    ax2.scatter3D(v2[:, 0], v2[:, 1], v2[:, 2])
+
+    # generate list of sides' polygons of our pyramid
+    verts2 = [[v2[0], v2[1], v2[4]], [v2[0], v2[3], v2[4]],
+             [v2[2], v2[1], v2[4]], [v2[2], v2[3], v2[4]], [v2[0], v2[1], v2[2], v2[3]]]
+
+    # plot sides
+    ax2.add_collection3d(Poly3DCollection(verts2,
+                                         linewidths=1, edgecolors='r', alpha=.25))
+
 
     cv2.imshow('img_left', frame_markers_l)
+    cv2.imwrite('../../output/task_6/Aruco_detected_left ' + str(i) + '.png', frame_markers_l)
+
     cv2.imshow('img_right', frame_markers_r)
+    cv2.imwrite('../../output/task_6/Aruco_detected_right ' + str(i) + '.png', frame_markers_r)
+
 
     cv2.waitKey(100)
 
 plt.show()
+fig.savefig('../../output/task_6/Plot_camera_pose.png')
+fig2.savefig('../../output/task_6/Plot_camera_pose2.png')
 
 
