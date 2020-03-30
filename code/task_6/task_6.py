@@ -9,7 +9,7 @@ import numpy as np
 
 objp = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0]], dtype=float)
 
-print(objp.shape)
+#print(objp.shape)
 
 v = np.array([[-1, -1, 2], [1, -1, 2], [1, 1, 2], [-1, 1, 2], [0, 0, 0]])
 fig = plt.figure()
@@ -60,7 +60,7 @@ for i in range(11):
 
 
 
-    print(corners_l.shape)
+    #print(corners_l.shape)
 
     _, rvec_l, tvec_l = cv2.solvePnP(objp, corners_l, intrinsic_matrix_left, distortion_left)
     rvec_l,_ = cv2.Rodrigues(rvec_l)
@@ -71,8 +71,9 @@ for i in range(11):
 
     tvec_l = np.matmul(-rvec_l,tvec_l)
 
-    print(5*tvec_l)
-    print(rvec_l)
+    print("left_image_" + str(i))
+    print("T vecor", 5 * tvec_l)
+    print("R matrix", rvec_l)
 
     _, rvec_r, tvec_r = cv2.solvePnP(objp, corners_r, intrinsic_matrix_right, distortion_right)
     rvec_r, _ = cv2.Rodrigues(rvec_r)
@@ -83,9 +84,9 @@ for i in range(11):
     rvec_r = rvec_r.T
 
     tvec_r = np.matmul(-rvec_r, tvec_r)
-
-    print(5 * tvec_r)
-    print(rvec_r)
+    # print("right_image_"+str(i))
+    # print("T vecor", 5 * tvec_r)
+    # print("R matrix", rvec_r)
 
     res1 = np.matmul(rvec_l,v.T)
     f_res = res1+(tvec_l)
@@ -113,6 +114,11 @@ for i in range(11):
     # plot sides
     ax.add_collection3d(Poly3DCollection(verts,
                                          linewidths=1, edgecolors='r', alpha=.25))
+     # plot each point + it's index as text above
+    #ax.scatter(v[i, 0], v[i, 1], v[i, 2], color='b')
+    ax.text(v[4, 0], v[4, 1], v[4, 2], '%s' % (str(i)), size=15,
+            color='k')
+
 
     ax2.scatter3D(v2[:, 0], v2[:, 1], v2[:, 2])
 
@@ -123,6 +129,8 @@ for i in range(11):
     # plot sides
     ax2.add_collection3d(Poly3DCollection(verts2,
                                          linewidths=1, edgecolors='r', alpha=.25))
+    ax2.text(v2[4, 0], v2[4, 1], v2[4, 2], '%s' % (str(i)), size=15,
+            color='k')
 
 
     cv2.imshow('img_left', frame_markers_l)
