@@ -1,11 +1,12 @@
 import cv2 as cv
 import numpy as np
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 str_left = '../../images/task_7/left_{}.png'
 str_right = '../../images/task_7/right_{}.png'
 df = (str_left.format(1))
 
-i=1                                                                                #Check which pair of images
+i=0                                                                         #Check which pair of images
 left = cv.imread(str_left.format(i), cv.IMREAD_GRAYSCALE)
 right = cv.imread(str_right.format(i), cv.IMREAD_GRAYSCALE)
 
@@ -202,13 +203,38 @@ ax.set_xlabel('X axis')
 ax.set_ylabel('Y axis')
 ax.set_zlabel('Z axis')
 ax.scatter(triangulate[0]/triangulate[3],triangulate[1]/triangulate[3],triangulate[2]/triangulate[3])
-fig2.savefig('../../output/task_7/Plot (inliers) ' + str(i) + '.png')
-plt.show()
+#fig2.savefig('../../output/task_7/Plot (inliers) ' + str(i) + '.png')
+
 
 #points, R, t, mask = cv.recoverPose(E, list_kp1, list_kp2)
 points, R, t, mask = cv.recoverPose(E, good_points_l, good_points_r)
+
+v = np.array([[-0.25, -0.25, 1], [0.25, -0.25, 1], [0.25, 0.25, 1], [-0.25, 0.25, 1], [0, 0, 0]])
+ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
+verts = [[v[0], v[1], v[4]], [v[0], v[3], v[4]],
+         [v[2], v[1], v[4]], [v[2], v[3], v[4]], [v[0], v[1], v[2], v[3]]]
+
+# plot sides
+ax.add_collection3d(Poly3DCollection(verts,
+                                     linewidths=1, edgecolors='r', alpha=.25))
+
+res1 = np.matmul(R, v.T)
+f_res = res1 + (10*t)
+v = f_res.T
+print(v)
+
+ax.scatter3D(v[:, 0], v[:, 1], v[:, 2])
+
+# generate list of sides' polygons of our pyramid
+verts = [[v[0], v[1], v[4]], [v[0], v[3], v[4]],
+         [v[2], v[1], v[4]], [v[2], v[3], v[4]], [v[0], v[1], v[2], v[3]]]
+
+# plot sides
+ax.add_collection3d(Poly3DCollection(verts,
+                                     linewidths=1, edgecolors='r', alpha=.25))
 
 print("R = ")
 print(R)
 print("t = ")
 print(t)
+plt.show()

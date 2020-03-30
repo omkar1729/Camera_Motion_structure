@@ -98,9 +98,6 @@ for i in range(11):
                                          linewidths=1, edgecolors='r', alpha=.25))
 
 
-
-
-
     cv2.imshow('img_left', frame_markers_l)
     cv2.imshow('img_right', frame_markers_r)
 
