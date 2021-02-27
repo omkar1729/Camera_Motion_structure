@@ -29,40 +29,42 @@ The warp function helps map one image to another where the target object in the 
 
 In this task we calculated the camera pose with help of ArUco markers. First, we detected the ArUco markers so that we get the 2d cordinates on image plane. We know the 3d world cordinates of those points. Hence, we are left with the task of obtaining the camera pose from these 3d – 2d point correspondences. This task is achieved with the help of Perspective-n-point algorithm. This is implemented in openCV as cv2.solvePnP(). The ArUco markers are represented by blue points and top left corner is marked red.
 
-This function is provided with inputs of 3d points, 2d points, camera intrinsic matrix and distortion coefficients. This function outputs a rotation and translation vector. We need to interpret these vectors carefully to obtain the camera pose with respect to world reference frame. The rotation vector needs to be converted to rotation matrix using the function cv2.Rodrigues(). Now the rotation and translation matrix transform the points from world reference frame to camera reference frame. But we want the opposite. Thus, we apply the inverse transformation. Hence, we don’t use the output of solvePnP function directly. Below are the rotation and translation vectors. Translation vector was multiplied by 5.
+This function is provided with inputs of 3d points, 2d points, camera intrinsic matrix and distortion coefficients. This function outputs a rotation and translation vector. We need to interpret these vectors carefully to obtain the camera pose with respect to world reference frame. The rotation vector needs to be converted to rotation matrix using the function cv2.Rodrigues(). Now the rotation and translation matrix transform the points from world reference frame to camera reference frame. But we want the opposite. Thus, we apply the inverse transformation. Hence, we don’t use the output of solvePnP function directly. 
 
-**Following are the results for R matrix followed by t\_vec for all left images -**
 
 
 Below are the camera poses obtained for all (11) left images and right images respectively
+| Camera pose left| Camera pose right|
+| -------------  | ---------------- |
+| <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_6/img.png" width="400" > | <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_6/img_1.png.png" width="400" > |
 
 **These are the images for detected ArUco markers -**
 
-**Task 7 **
+| <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_6/Aruco_detected_left%200.png" width="400" > | <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_6/Aruco_detected_right%205.png" width="400" > |
+
+**Task 7 -**
 
 The findEssentialMat() is used to calculate the essential matrix from the corresponding points in the two images, E and the mask array with every element set as 0 for outliers and 1 for inliers. These are the two outputs generated form the function and the parameters are the key points from the two images (points1, points2), the camera matrix which is the same as the camera intrinsic matrix obtained from the calibration results and the method for computing the matrix which is RANSAC in this case. The function also has a probability and threshold parameter. The probability (prob) parameter is used to specify the desirable level of confidence that the estimated matrix is correct, which is taken as 0.999 in the code. The threshold parameter is the maximum distance from a point to an epipolar line in pixels, beyond which the point is considered an outlier and is not used to compute E and has been taken as 1.0.
 
 The recoverPose() is used obtain the relative camera rotation and translation matrices from an estimated essential matrix and the key points in the two images. It also outputs the mask array which marks the inliers for the key points for the E matrix. The function takes the essential matrix E, the two keypoints and the instrinsic camera matrix as input parameters.
 
 Pair 2
+| Matching Feature points from the two views in pair 2| Inliers of matched feature points after calculating the essential matrix E for pair 2|
+| -------------  | ---------------- |
+| <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_7/Feature%20Matching%201.png" width="800" > | <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_7/Feature%20Matching%20(inliers)%201.png" width="800" > |
 
-Matching Feature points from the two views in pair 2
 
-Inliers of matched feature points after calculating the essential matrix E for pair 2
+
+
 
 Reconstructed 3D points and camera pose for pair 2
 
-Pair 10
-
-Matching Feature points from the two views in pair 10
-
-Inliers of matched feature points after calculating the essential matrix E for pair 10
-
-Reconstructed 3D points and camera pose for pair 10
+<p align="center">
+  <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_7/Plot%20(inliers)%201.png" width="600" >
+</p>
 
 The essential, rotation and translation matrices obtained form the code are given below.
 
-Image pair: 2
 
 E =
 
@@ -88,31 +90,7 @@ t =
 
  \[-0.90910251\]\]
 
-Image pair: 10
 
-E =
-
-\[\[-0.00761049 -0.67707049 0.05255349\]
-
- \[ 0.68690932 -0.01226656 0.15712973\]
-
- \[-0.06066155 -0.19592759 0.0019189 \]\]
-
-R =
-
-\[\[ 0.99817986 -0.01573864 -0.05821741\]
-
- \[ 0.01618946 0.99984244 0.00728019\]
-
- \[ 0.05809365 -0.00820945 0.99827738\]\]
-
-t =
-
-\[\[ 0.27840891\]
-
- \[-0.08142931\]
-
- \[-0.95700457\]\]
 
 **Requirements for running the code -**
 
@@ -122,10 +100,3 @@ t =
 
 3) from mpl\_toolkits.mplot3d.art3d import Poly3DCollection, Line3DCollection
 
-**Team Roles and Contribution -**
-
-1) Omkar Muglikar (Reporter) – Completed task 6 and wrote the report
-
-2) Mitul Magu (Tech Lead) – Completed task 7
-
-3) Sarthake Choudhary (Supporter) – Completed task 5
