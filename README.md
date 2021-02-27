@@ -1,6 +1,8 @@
+
+
 # Camera Motion and Structure
 
-**Task5 - **
+**Task 5 -** 
 
 Task 5 requires us to transform points from the given image (i.e. image plane) to world plane.
 
@@ -10,29 +12,31 @@ dst(x,y) = src(map\_x(x,y),map\_y(x,y))
 
 Then ‘findchessboardcorners’ function is called to get the image coordinates of chessboard corners. Along with it, we create the 2d real world points of the chessboard corners. It is given in the problem statement that the coordinates of the real world are scaled by a factor of 10 and translated to (300,800). Using this information we know the coordinates of chessboard corners in the destination plane, i.e. real world plane are of the form (300,800); (310,800)....(380,850). These points are created and stored in a numpy array.
 
-Then the function findHomography is called by inputting the image coordinates and real world 2d coordniates that we have stored to create the homography matrix. The homography matrix obtained for image left\_0 is shown below:
-
+Then the function findHomography is called by inputting the image coordinates and real world 2d coordniates that we have stored to create the homography matrix. 
 
 After we obtain the homography matrix, we use it in the function warpPerspective to perform perspective transformation and obtain the desired image as shown in Fig 1.0. Fig1.0 a. Is the warped image of left\_0 whereas Fig1.0 b. Is the warped image of the right\_0
 
-a. Warped image of left\_0
 
-b. Warped image of right\_0
+| Warped Image Left | Warped Image Right |
+| -------------  | ---------------- |
+| <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_5/left_warp%200.png" width="400" > | <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_5/right_warp%200.png" width="400" > |
+
+
 
 The warp function helps map one image to another where the target object in the image is projected onto one plane, just like in the real world. This is a form of perspective transformation. It takes in two inputs. First is the source image that is to be transformed. Second is the homography matrix or the transformation matrix that will apply the required transformation to the source image. It also provides the user the option to input the size of the target image after transformation has been applied.
 
-**Task 6 - **
+**Task 6**
 
 In this task we calculated the camera pose with help of ArUco markers. First, we detected the ArUco markers so that we get the 2d cordinates on image plane. We know the 3d world cordinates of those points. Hence, we are left with the task of obtaining the camera pose from these 3d – 2d point correspondences. This task is achieved with the help of Perspective-n-point algorithm. This is implemented in openCV as cv2.solvePnP(). The ArUco markers are represented by blue points and top left corner is marked red.
 
 This function is provided with inputs of 3d points, 2d points, camera intrinsic matrix and distortion coefficients. This function outputs a rotation and translation vector. We need to interpret these vectors carefully to obtain the camera pose with respect to world reference frame. The rotation vector needs to be converted to rotation matrix using the function cv2.Rodrigues(). Now the rotation and translation matrix transform the points from world reference frame to camera reference frame. But we want the opposite. Thus, we apply the inverse transformation. Hence, we don’t use the output of solvePnP function directly. Below are the rotation and translation vectors. Translation vector was multiplied by 5.
 
+**Following are the results for R matrix followed by t\_vec for all left images -**
+
 
 Below are the camera poses obtained for all (11) left images and right images respectively
 
-
-
-These are the images for detected ArUco markers -
+**These are the images for detected ArUco markers -**
 
 **Task 7 **
 
