@@ -36,7 +36,7 @@ This function is provided with inputs of 3d points, 2d points, camera intrinsic 
 Below are the camera poses obtained for all (11) left images and right images respectively
 | Camera pose left| Camera pose right|
 | -------------  | ---------------- |
-| <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_6/img.png" width="400" > | <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_6/img_1.png.png" width="400" > |
+| <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_6/img.png" width="400" > | <img src="https://github.com/omkar1729/Perception_Project_2b/blob/master/output/task_6/img_1.png" width="400" > |
 
 **These are the images for detected ArUco markers -**
 
